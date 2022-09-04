@@ -14,6 +14,7 @@ var (
 )
 
 func main() {
+	time.Sleep(3 * time.Second)
 	light1 := NewPeripheral("LightBulb1")
 	light2 := NewPeripheral("LightBulb2")
 	dispatch := trig.NewDispatch(dispatchCh)
