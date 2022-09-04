@@ -89,7 +89,6 @@ func (r *responder) Execute(t trig.Trigger) {
 	}
 	switch t.Action {
 	case "FakeOn":
-		println("FakeOn")
 		t.Error, t.Report = false, false
 		t.Message = string(r.name + " executing FakeOn at " + time.Now().String())
 		if t.Duration > 0 {
@@ -101,16 +100,17 @@ func (r *responder) Execute(t trig.Trigger) {
 			}()
 		}
 		t.ReportCh <- t
+		println(r.name + "doing FakeOn")
 	case "FakeOff":
-		println("FakeOff")
 		t.Error, t.Report = false, false
 		t.Message = string(r.name + " executing FakeOff at " + time.Now().String())
 		t.ReportCh <- t
+		println(r.name + " doing FakeOff")
 	case "FakeToggle":
-		println("FakeToggle")
 		t.Error, t.Report = false, false
 		t.Message = string(r.name + " executing FakeToggle at " + time.Now().String())
 		t.ReportCh <- t
+		println(r.name + "doing FakeToggle")
 	}
 }
 
@@ -128,7 +128,7 @@ func (m *fakeMqtt) ListenAndSend() {
 	for {
 		select {
 		case t := <-m.input:
-			println("Mqtt MISO Reponse: " + t.Message)
+			println("	Mqtt MISO Reponse: " + t.Message)
 		}
 	}
 }
