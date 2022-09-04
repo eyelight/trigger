@@ -90,7 +90,7 @@ func (r *responder) Execute(t trig.Trigger) {
 	switch t.Action {
 	case "FakeOn":
 		t.Error, t.Report = false, false
-		t.Message = string(r.name + " executing FakeOn at " + time.Now().String())
+		t.Message = string(r.name + " executing FakeOn at " + time.Now().String() + " for duration " + t.Duration.String())
 		if t.Duration > 0 {
 			go func() {
 				println("anon")
@@ -110,7 +110,7 @@ func (r *responder) Execute(t trig.Trigger) {
 		t.Error, t.Report = false, false
 		t.Message = string(r.name + " executing FakeToggle at " + time.Now().String())
 		t.ReportCh <- t
-		println(r.name + "doing FakeToggle")
+		println(r.name + " doing FakeToggle")
 	}
 }
 
