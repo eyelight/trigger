@@ -51,13 +51,16 @@ func main() {
 		Report:   true,
 		ReportCh: fakeMqttCh,
 	}
-	println(triggerFromMqttA)
+	println(triggerFromMqttA.String())
 	dispatchCh <- triggerFromMqttA
 	time.Sleep(2 * time.Second)
+	println(triggerFromMqttB.String())
 	dispatchCh <- triggerFromMqttB
 	time.Sleep(1 * time.Second)
+	println(triggerFromMqttC.String())
 	dispatchCh <- triggerFromMqttC
 	time.Sleep(200 * time.Millisecond)
+	println(triggerFromMqttD.String())
 	dispatchCh <- triggerFromMqttD
 	select {}
 }
