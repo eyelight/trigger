@@ -21,6 +21,25 @@ type Trigger struct {
 	Error    bool          // whether this trigger is an error
 }
 
+func (t *Trigger) String() string {
+	ss := strings.Builder{}
+	ss.Grow(512)
+	ss.WriteString("Trigger\n")
+	ss.WriteString("\tTarget: ")
+	ss.WriteString(t.Target)
+	ss.WriteString("\n\tAction: ")
+	ss.WriteString(t.Action)
+	ss.WriteString("\n\tDuration: ")
+	ss.WriteString(t.Duration.String())
+	ss.WriteString("\n\tMessage: ")
+	ss.WriteString(t.Message)
+	ss.WriteString("\n\tReport: ")
+	ss.WriteString(strconv.FormatBool(t.Report))
+	ss.WriteString("\n\tError: ")
+	ss.WriteString(strconv.FormatBool(t.Error))
+	return ss.String()
+}
+
 type Dispatch struct {
 	TriggerCh    chan Trigger  // the channel on which the Dispatcher will receive Triggers
 	Triggerables []Triggerable // a slice of Triggerables addressable by the Dispatcher
