@@ -27,28 +27,24 @@ func main() {
 		Target:   "LightBulb1",
 		Action:   "FakeOn",
 		Duration: time.Duration(5 * time.Second),
-		Report:   true,
 		ReportCh: fakeMqttCh,
 	}
 	triggerFromMqttB := trig.Trigger{
 		Target:   "LightBulb2",
 		Action:   "FakeOff",
 		Duration: time.Duration(0),
-		Report:   true,
 		ReportCh: fakeMqttCh,
 	}
 	triggerFromMqttC := trig.Trigger{
 		Target:   "LightBulb3",
 		Action:   "FakeToggle",
 		Duration: time.Duration(0),
-		Report:   true,
 		ReportCh: fakeMqttCh,
 	}
 	triggerFromMqttD := trig.Trigger{
 		Target:   "LightBulb1",
 		Action:   "FakeOn",
 		Duration: time.Duration(0),
-		Report:   true,
 		ReportCh: fakeMqttCh,
 	}
 	println(triggerFromMqttA.String())
@@ -85,14 +81,14 @@ func (r *responder) Name() string {
 
 func (r *responder) Execute(t trig.Trigger) {
 	if t.Target != r.name {
-		t.Error, t.Report = true, false
+		t.Error = true
 		t.Message = string("error - " + r.name + " received a trigger intended for " + t.Target)
 		t.ReportCh <- t
 		return
 	}
 	switch t.Action {
 	case "FakeOn":
-		t.Error, t.Report = false, false
+		t.Error = false
 		t.Message = string(r.name + " executing FakeOn at " + time.Now().String() + " for duration " + t.Duration.String())
 		if t.Duration > 0 {
 			go func() {
@@ -105,12 +101,12 @@ func (r *responder) Execute(t trig.Trigger) {
 		t.ReportCh <- t
 		println(r.name + " doing FakeOn")
 	case "FakeOff":
-		t.Error, t.Report = false, false
+		t.Error = false
 		t.Message = string(r.name + " executing FakeOff at " + time.Now().String())
 		t.ReportCh <- t
 		println(r.name + " doing FakeOff")
 	case "FakeToggle":
-		t.Error, t.Report = false, false
+		t.Error = false
 		t.Message = string(r.name + " executing FakeToggle at " + time.Now().String())
 		t.ReportCh <- t
 		println(r.name + " doing FakeToggle")
