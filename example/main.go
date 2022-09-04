@@ -51,7 +51,7 @@ func main() {
 		Report:   true,
 		ReportCh: fakeMqttCh,
 	}
-
+	println(triggerFromMqttA)
 	dispatchCh <- triggerFromMqttA
 	time.Sleep(2 * time.Second)
 	dispatchCh <- triggerFromMqttB
@@ -128,7 +128,7 @@ func (m *fakeMqtt) ListenAndSend() {
 	for {
 		select {
 		case t := <-m.input:
-			println("	Mqtt MISO Reponse: " + t.Message)
+			println("	FakeMqtt Device Reponse: " + t.Message)
 		}
 	}
 }
