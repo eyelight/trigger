@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ERR_TARGET_NOT_FOUND = "Trigger Name doesn't match any known Triggerable names"
+	ERR_TARGET_NOT_FOUND = "Target unknown to the Dispatcher"
 )
 
 type Trigger struct {
