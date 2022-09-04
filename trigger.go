@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	ERR_TARGET_NOT_FOUND = "Trigger's Target doesn't match any known Triggerable names"
+	ERR_TARGET_NOT_FOUND = "Trigger Name doesn't match any known Triggerable names"
 )
 
 type Trigger struct {
@@ -82,5 +82,5 @@ func (d *Dispatch) getReceiver(t Trigger) (Triggerable, error) {
 			return v, nil
 		}
 	}
-	return nil, errors.New(string(ERR_TARGET_NOT_FOUND + "(known Triggerables: " + strconv.FormatInt(int64(len(d.Triggerables)), 10) + ")"))
+	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + "(known Triggerables: " + strconv.FormatInt(int64(len(d.Triggerables)), 10) + ")"))
 }
