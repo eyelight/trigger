@@ -3,6 +3,7 @@ package trigger
 import (
 	"errors"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -82,5 +83,12 @@ func (d *Dispatch) getReceiver(t Trigger) (Triggerable, error) {
 			return v, nil
 		}
 	}
-	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + "(known Triggerables: " + strconv.FormatInt(int64(len(d.Triggerables)), 10) + ")"))
+	ss := strings.Builder{}
+	ss.Grow(len(d.Triggerables) * 16)
+	ss.WriteString("Names: ")
+	for _, n := range d.Triggerables {
+		ss.WriteString(n.Name())
+		ss.WriteString(", ")
+	}
+	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + "(known Triggerables: " + strconv.FormatInt(int64(len(d.Triggerables)), 10) + ") " + ss.String()))
 }
