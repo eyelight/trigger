@@ -1,14 +1,12 @@
 package main
 
 import (
-	"machine"
 	"time"
 
 	trig "github.com/eyelight/trigger"
 )
 
 var (
-	btn        = machine.D3
 	dispatchCh = make(chan trig.Trigger, 1)
 	fakeMqttCh = make(chan trig.Trigger, 1)
 )
@@ -92,9 +90,8 @@ func (r *responder) Execute(t trig.Trigger) {
 		t.Message = string(r.name + " executing FakeOn at " + time.Now().String() + " for duration " + t.Duration.String())
 		if t.Duration > 0 {
 			go func() {
-				println("anon")
 				time.Sleep(t.Duration)
-				t.Message = string(r.name + " executed FakeOff after " + t.Duration.String())
+				t.Message = string(r.name + " executed FakeOff at " + time.Now().String() + " after " + t.Duration.String())
 				t.ReportCh <- t
 			}()
 		}
