@@ -100,7 +100,7 @@ func (r *responder) Execute(t trig.Trigger) {
 			}()
 		}
 		t.ReportCh <- t
-		println(r.name + "doing FakeOn")
+		println(r.name + " doing FakeOn")
 	case "FakeOff":
 		t.Error, t.Report = false, false
 		t.Message = string(r.name + " executing FakeOff at " + time.Now().String())
