@@ -76,6 +76,19 @@ func (d *Dispatch) Dispatch() {
 	for {
 		select {
 		case t := <-d.TriggerCh:
+			if t.Target == "?" {
+				ss := strings.Builder{}
+				ss.Grow(512)
+				ss.WriteString("Valid targets: ")
+				for _, n := range d.Triggerables {
+					ss.WriteString(n.Name())
+					ss.WriteString(", ")
+				}
+				t.Message = ss.String()
+				println(t.Message)
+				t.ReportCh <- t
+				continue
+			}
 			r, err := d.findTarget(t)
 			if err != nil {
 				println(err.Error())
