@@ -37,9 +37,9 @@ func (t Trigger) String() string {
 	return ss.String()
 }
 
-type Dispatch struct {
-	TriggerCh    chan Trigger  // the channel on which the Dispatcher will receive Triggers
-	Triggerables []Triggerable // a slice of Triggerables addressable by the Dispatcher
+type dispatch struct {
+	triggerCh    chan Trigger  // the channel on which the Dispatcher will receive Triggers
+	triggerables []Triggerable // a slice of Triggerables addressable by the Dispatcher
 }
 
 type Dispatcher interface {
@@ -56,31 +56,31 @@ type Triggerable interface {
 
 // NewDispatch returns a Dispatcher listening for Triggers on a passed-in channel
 func NewDispatch(triggerCh chan Trigger) Dispatcher {
-	return &Dispatch{
-		TriggerCh:    triggerCh,
-		Triggerables: make([]Triggerable, 0),
+	return &dispatch{
+		triggerCh:    triggerCh,
+		triggerables: make([]Triggerable, 0),
 	}
 }
 
 // AddToDispatch makes a Dispatcher aware of a slice of Triggerables
-func (d *Dispatch) AddToDispatch(t ...Triggerable) {
+func (d *dispatch) AddToDispatch(t ...Triggerable) {
 	if len(t) > 0 {
-		d.Triggerables = append(d.Triggerables, t...)
+		d.triggerables = append(d.triggerables, t...)
 	}
 }
 
 // Dispatch is a goroutine accepting Triggers on a channel,
 // matches the received Trigger.Target to a Triggerable known to the Dispatcher,
 // and concurrently calls the Triggerable to Execute(Trigger)
-func (d *Dispatch) Dispatch() {
+func (d *dispatch) Dispatch() {
 	for {
 		select {
-		case t := <-d.TriggerCh:
+		case t := <-d.triggerCh:
 			if t.Target == "?" {
 				ss := strings.Builder{}
 				ss.Grow(512)
 				ss.WriteString("Valid targets: ")
-				for _, n := range d.Triggerables {
+				for _, n := range d.triggerables {
 					ss.WriteString(n.Name())
 					ss.WriteString(", ")
 				}
@@ -105,18 +105,18 @@ func (d *Dispatch) Dispatch() {
 	}
 }
 
-func (d *Dispatch) findTarget(t Trigger) (Triggerable, error) {
-	for _, v := range d.Triggerables {
+func (d *dispatch) findTarget(t Trigger) (Triggerable, error) {
+	for _, v := range d.triggerables {
 		if t.Target == v.Name() {
 			return v, nil
 		}
 	}
 	ss := strings.Builder{}
-	ss.Grow(len(d.Triggerables) * 16)
+	ss.Grow(len(d.triggerables) * 16)
 	ss.WriteString("named: ")
-	for _, n := range d.Triggerables {
+	for _, n := range d.triggerables {
 		ss.WriteString(n.Name())
 		ss.WriteString(", ")
 	}
-	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + " (" + strconv.FormatInt(int64(len(d.Triggerables)), 10) + " known Triggerables " + ss.String() + ") "))
+	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + " (" + strconv.FormatInt(int64(len(d.triggerables)), 10) + " known Triggerables " + ss.String() + ") "))
 }
