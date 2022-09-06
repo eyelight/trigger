@@ -104,6 +104,7 @@ func (d *dispatch) Dispatch() {
 				continue
 			}
 			go func() {
+				println("executing on " + r.Name() + " from trigger " + t.Target)
 				r.Execute(t)
 			}()
 		}
