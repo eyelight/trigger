@@ -44,7 +44,7 @@ type dispatch struct {
 
 type Dispatcher interface {
 	AddToDispatch(t ...Triggerable) // pass any Triggerable who you want to be addressable by this Dispatcher
-	Dispatch()                      // pass the channel on which the Dispatcher will consume Triggers
+	Dispatch()                      // Dispatcher will consume (dispatch).triggerCh
 }
 
 type Triggerable interface {
@@ -73,6 +73,10 @@ func (d *dispatch) AddToDispatch(t ...Triggerable) {
 // matches the received Trigger.Target to a Triggerable known to the Dispatcher,
 // and concurrently calls the Triggerable to Execute(Trigger)
 func (d *dispatch) Dispatch() {
+	println("Dispatching – Valid Targets:")
+	for _, n := range d.triggerables {
+		println("			" + n.Name())
+	}
 	for {
 		select {
 		case t := <-d.triggerCh:
