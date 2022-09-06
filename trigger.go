@@ -65,6 +65,7 @@ func NewDispatch(triggerCh chan Trigger) Dispatcher {
 // AddToDispatch makes a Dispatcher aware of a slice of Triggerables
 func (d *dispatch) AddToDispatch(t ...Triggerable) {
 	if len(t) > 0 {
+		println("Adding triggerables to dispatch")
 		d.triggerables = append(d.triggerables, t...)
 	}
 }
@@ -74,8 +75,8 @@ func (d *dispatch) AddToDispatch(t ...Triggerable) {
 // and concurrently calls the Triggerable to Execute(Trigger)
 func (d *dispatch) Dispatch() {
 	println("Dispatching – Valid Targets:")
-	for _, n := range d.triggerables {
-		println("			" + n.Name())
+	for i := range d.triggerables {
+		println("			" + d.triggerables[i].Name())
 	}
 	for {
 		select {
