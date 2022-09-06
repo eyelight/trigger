@@ -112,9 +112,9 @@ func (d *dispatch) Dispatch() {
 }
 
 func (d *dispatch) findTarget(t Trigger) (Triggerable, error) {
-	for _, v := range d.triggerables {
-		if t.Target == v.Name() {
-			return v, nil
+	for i := range d.triggerables {
+		if t.Target == d.triggerables[i].Name() {
+			return d.triggerables[i], nil
 		}
 	}
 	ss := strings.Builder{}
