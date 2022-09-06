@@ -74,7 +74,7 @@ func (d *dispatch) AddToDispatch(t ...Triggerable) {
 // matches the received Trigger.Target to a Triggerable known to the Dispatcher,
 // and concurrently calls the Triggerable to Execute(Trigger)
 func (d *dispatch) Dispatch() {
-	println("Dispatching – Valid Targets:")
+	println("Dispatching – " + strconv.FormatInt(int64(len(d.triggerables)), 10) + " Valid Targets")
 	for i := range d.triggerables {
 		println("			" + d.triggerables[i].Name())
 	}
