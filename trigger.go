@@ -124,5 +124,5 @@ func (d *dispatch) findTarget(t Trigger) (Triggerable, error) {
 		ss.WriteString(d.triggerables[i].Name())
 		ss.WriteString(", ")
 	}
-	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + " (" + strconv.FormatInt(int64(len(d.triggerables)), 10) + " known Triggerables: " + ss.String() + ") "))
+	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + " (" + strconv.FormatInt(int64(len(d.triggerables)), 10) + " known Triggerables " + ss.String() + ") "))
 }
