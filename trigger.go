@@ -96,7 +96,7 @@ func (d *dispatch) Dispatch() {
 			}
 			r, err := d.findTarget(t)
 			if err != nil {
-				println(err.Error())
+				println("dispatcher error - " + err.Error())
 				t.Target = "MISO"
 				t.Action = "ErrorReport"
 				t.Message = err.Error()
@@ -120,9 +120,9 @@ func (d *dispatch) findTarget(t Trigger) (Triggerable, error) {
 	ss := strings.Builder{}
 	ss.Grow(len(d.triggerables) * 16)
 	ss.WriteString("named: ")
-	for _, n := range d.triggerables {
-		ss.WriteString(n.Name())
+	for i := range d.triggerables {
+		ss.WriteString(d.triggerables[i].Name())
 		ss.WriteString(", ")
 	}
-	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + " (" + strconv.FormatInt(int64(len(d.triggerables)), 10) + " known Triggerables " + ss.String() + ") "))
+	return nil, errors.New(string(t.Target + " " + ERR_TARGET_NOT_FOUND + " (" + strconv.FormatInt(int64(len(d.triggerables)), 10) + " known Triggerables: " + ss.String() + ") "))
 }
