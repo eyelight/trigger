@@ -20,7 +20,7 @@ type Trigger struct {
 	Error    bool          // whether this trigger is an error
 }
 
-func (t *Trigger) String() string {
+func (t Trigger) String() string {
 	ss := strings.Builder{}
 	ss.Grow(512)
 	ss.WriteString("Trigger\n")
