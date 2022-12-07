@@ -2,6 +2,7 @@ package trigger
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -74,9 +75,9 @@ func (d *dispatch) AddToDispatch(t ...Triggerable) {
 // matches the received Trigger.Target to a Triggerable known to the Dispatcher,
 // and concurrently calls the Triggerable to Execute(Trigger)
 func (d *dispatch) Dispatch() {
-	println("Dispatching – " + strconv.FormatInt(int64(len(d.triggerables)), 10) + " Valid Targets")
+	fmt.Println("Dispatching – " + strconv.FormatInt(int64(len(d.triggerables)), 10) + " Valid Targets")
 	for i := range d.triggerables {
-		println("			" + d.triggerables[i].Name())
+		fmt.Println("			" + d.triggerables[i].Name())
 	}
 	for {
 		select {
@@ -90,13 +91,13 @@ func (d *dispatch) Dispatch() {
 					ss.WriteString(", ")
 				}
 				t.Message = ss.String()
-				println(t.Message)
+				fmt.Println(t.Message)
 				t.ReportCh <- t
 				continue
 			}
 			r, err := d.findTarget(t)
 			if err != nil {
-				println("dispatcher error - " + err.Error())
+				fmt.Println("dispatcher error - " + err.Error())
 				t.Target = "MISO"
 				t.Action = "ErrorReport"
 				t.Message = err.Error()
@@ -104,7 +105,7 @@ func (d *dispatch) Dispatch() {
 				continue
 			}
 			go func() {
-				println("executing on " + r.Name() + " from trigger " + t.Target)
+				fmt.Println("executing on " + r.Name() + " from trigger " + t.Target)
 				r.Execute(t)
 			}()
 		}
