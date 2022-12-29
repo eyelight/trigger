@@ -66,7 +66,7 @@ func NewDispatch(triggerCh chan Trigger) Dispatcher {
 // AddToDispatch makes a Dispatcher aware of a slice of Triggerables
 func (d *dispatch) AddToDispatch(t ...Triggerable) {
 	if len(t) > 0 {
-		println("Adding triggerables to dispatch")
+		fmt.Println("Adding triggerables to dispatch")
 		d.triggerables = append(d.triggerables, t...)
 	}
 }
